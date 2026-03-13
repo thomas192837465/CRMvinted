@@ -3,7 +3,8 @@
 
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
-import type { Database } from '@/types/database'
+// Correction du chemin pour éviter les erreurs d'alias @/ sur Vercel
+import type { Database } from '../../types/database'
 
 export function createClient() {
   const cookieStore = cookies()
@@ -32,10 +33,17 @@ export function createClient() {
 
 // Client admin avec service_role (bypass RLS — uniquement serveur)
 export function createAdminClient() {
+  // Utilisation de require pour éviter les conflits d'importation côté client
   const { createClient: createSupabase } = require('@supabase/supabase-js')
+  
   return createSupabase<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { auth: { autoRefreshToken: false, persistSession: false } }
+    { 
+      auth: { 
+        autoRefreshToken: false, 
+        persistSession: false 
+      } 
+    }
   )
 }
