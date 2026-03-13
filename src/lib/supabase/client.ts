@@ -1,8 +1,6 @@
-// ─── src/lib/supabase/client.ts ───────────────────────────────────────────────
-// Client Supabase côté navigateur (composants Client)
-
 import { createBrowserClient } from '@supabase/ssr'
-import type { Database } from '@/types/database'
+// On remplace @/ par ../../ pour remonter les dossiers
+import type { Database } from '../../types/database' 
 
 export function createClient() {
   return createBrowserClient<Database>(
